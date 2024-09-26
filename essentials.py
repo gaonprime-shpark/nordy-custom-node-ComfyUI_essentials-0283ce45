@@ -403,15 +403,15 @@ class MaskPreview(SaveImage):
     def INPUT_TYPES(s):
         return {
             "required": {"mask": ("MASK",), },
-            "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
+            "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO", "job_id": "JOB_ID", "isPrivate": "IS_PRIVATE"},
         }
     
     FUNCTION = "execute"
     CATEGORY = "essentials"
 
-    def execute(self, mask, filename_prefix="ComfyUI", prompt=None, extra_pnginfo=None):
+    def execute(self, mask, filename_prefix="ComfyUI", prompt=None, extra_pnginfo=None, job_id=None, isPrivate=False):
         preview = mask.reshape((-1, 1, mask.shape[-2], mask.shape[-1])).movedim(1, -1).expand(-1, -1, -1, 3)
-        return self.save_images(preview, filename_prefix, prompt, extra_pnginfo)
+        return self.save_images(preview, filename_prefix, prompt, extra_pnginfo, job_id, isPrivate)
 
 class MaskBatch:
     @classmethod
